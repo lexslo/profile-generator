@@ -15,7 +15,7 @@ function createManager () {
        { 
             type: 'input',
             name: 'name',
-            message: 'What is the manager\'s name?',
+            message: 'What is the Manager\'s name?',
             validate: nameInput => {
             if (nameInput) {
                 return true;
@@ -28,7 +28,7 @@ function createManager () {
         { 
             type: 'input',
             name: 'id',
-            message: 'What is the manager\'s ID number?',
+            message: 'What is the Manager\'s ID number?',
             validate: idInput => {
             if (idInput) {
                 return true;
@@ -41,7 +41,7 @@ function createManager () {
         { 
             type: 'input',
             name: 'email',
-            message: 'What is the manager\'s email address?',
+            message: 'What is the Manager\'s email address?',
             validate: emailInput => {
             if (emailInput) {
                 return true;
@@ -54,7 +54,7 @@ function createManager () {
         { 
             type: 'input',
             name: 'office',
-            message: 'What is the manager\'s office number?',
+            message: 'What is the Manager\'s office number?',
             validate: officeInput => {
             if (officeInput) {
                 return true;
@@ -67,7 +67,7 @@ function createManager () {
     ])
     .then(answers => {
         let manager = new Manager(answers.name, answers.id, answers.email, answers.office);
-        // send answers to teamMembers array
+        // send manager to teamMembers array
         teamMembers.push(manager);
     });
 }
@@ -84,16 +84,17 @@ function optionMenu () {
     ])
     .then(answer => {
         if (answer.menu === 'Add Engineer') {
-            console.log('adding engineer');
+            console.log('===== Adding Engineer =====');
             createEngineer();
         }
         if (answer.menu === 'Add Intern') {
-            console.log('adding intern');
+            console.log('===== Adding Intern ======');
             createIntern();
         }
         if (answer.menu === 'Finished') {
-            console.log('finished');
-            generateHTML();
+            console.log('*** FINISHED! ***');
+            console.log(teamMembers);
+            //generateHTML(teamMembers);
         }
     })
 }
@@ -142,7 +143,7 @@ function createEngineer () {
         { 
             type: 'input',
             name: 'github',
-            message: 'What is the manager\'s GitHub username?',
+            message: 'What is the Engineer\'s GitHub username?',
             validate: githubInput => {
             if (githubInput) {
                 return true;
@@ -154,17 +155,73 @@ function createEngineer () {
         }
     ])
     .then(answers => {
-        // send answers to teamMembers array
-        //teamMembers.push(answers);
+        let engineer = new Engineer(answers.name, answers.id, answers.email, answers.github);
+        // send engineer to teamMembers array
+        teamMembers.push(engineer);
+        optionMenu();
     });
 }
 
 function createIntern () {
     inquirer.prompt([
-        // questions here
+        { 
+            type: 'input',
+            name: 'name',
+            message: 'What is the Intern\'s name?',
+            validate: nameInput => {
+            if (nameInput) {
+                return true;
+            } else {
+                console.log('Please enter a name');
+                return false;
+            }
+            }
+        },
+        { 
+            type: 'input',
+            name: 'id',
+            message: 'What is the Intern\'s ID number?',
+            validate: idInput => {
+            if (idInput) {
+                return true;
+            } else {
+                console.log('Please enter an ID');
+                return false;
+            }
+            }
+        },
+        { 
+            type: 'input',
+            name: 'email',
+            message: 'What is the Intern\'s email address?',
+            validate: emailInput => {
+            if (emailInput) {
+                return true;
+            } else {
+                console.log('Please enter an email');
+                return false;
+            }
+            }
+        },
+        { 
+            type: 'input',
+            name: 'school',
+            message: 'What is the name Intern\'s school?',
+            validate: schoolInput => {
+            if (schoolInput) {
+                return true;
+            } else {
+                console.log('Please enter a school');
+                return false;
+            }
+            }
+        }
     ])
     .then(answers => {
-        teamMembers.push(answers);
+        let intern = new Intern(answers.name, answers.id, answers.email, answers.school);
+        // send engineer to teamMembers array
+        teamMembers.push(intern);
+        optionMenu();
     });
 }
 
