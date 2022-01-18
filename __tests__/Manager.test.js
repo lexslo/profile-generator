@@ -6,7 +6,7 @@ test('Creates an Manager object', () => {
     expect(manager.name).toBe('Erin');
     expect(manager.id).toBe(222);
     expect(manager.email).toBe('email2@email.com');
-    expect(manager.officeNumber).toBe(616);
+    expect(manager.office).toBe(616);
 });
 
 test('Prints requested property', () => {

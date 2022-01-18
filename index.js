@@ -3,6 +3,7 @@ const inquirer = require('inquirer');
 const fs = require('fs');
 // require files within project
 const {generateTeam, generateHTML} = require('./src/utils.js');
+
 const Manager = require('./lib/Manager.js');
 const Engineer = require('./lib/Engineer.js');
 const Intern = require('./lib/Intern.js');
@@ -67,11 +68,11 @@ function createManager () {
         }
     ])
     .then(answers => {
-        //let manager = new Manager(answers.name, answers.id, answers.email, answers.office);
-        // send manager to teamMembers array
+        // assign role
         answers.role = 'Manager';
-        //teamMembers.push(manager);
+        // send manager to teamMembers array
         teamMembers.push(answers);
+        // go to option menu
         return optionMenu();
     });
 }
@@ -159,12 +160,10 @@ function createEngineer () {
         }
     ])
     .then(answers => {
-        //let engineer = new Engineer(answers.name, answers.id, answers.email, answers.github);
-        // send engineer to teamMembers array
+        // assign correct role
         answers.role = 'Engineer';
-        //teamMembers.push(engineer);
+        // send engineer to teamMembers array
         teamMembers.push(answers);
-        console.log(teamMembers);
         // return to menu
         return optionMenu();
     });
@@ -226,12 +225,10 @@ function createIntern () {
         }
     ])
     .then(answers => {
-        // let intern = new Intern(answers.name, answers.id, answers.email, answers.school);
-        // send engineer to teamMembers array
-        //teamMembers.push(intern);
+        // assign correct role
         answers.role = 'Intern';
+        // send engineer to teamMembers array
         teamMembers.push(answers);
-        console.log(teamMembers);
         // return to menu
         return optionMenu();
     });
@@ -248,23 +245,28 @@ function writeToFile(data) {
       });
 };
 
+// function to copy CSS file to dist folder
+function copyFile() {
+    fs.copyFile('./src/styles.css', './dist/styles.css', (err) => {
+        if (err)
+          console.log(err);
+        else {
+          console.log("CSS successfully copied!");
+        }
+      });
+}
+
 //Initialize app
 createManager()
-    // .then(teamMembers => {
-    //     let htmlObj = generateTeam(teamMembers);
-    //     return htmlObj;
-    // })
-    // .then(htmlObj => {
-    //     let htmlData = generateHTML(htmlObj);
-    //     return htmlData;
-    // })
-    .then(teamMembers => {
-        let htmlData = generateHTML(teamMembers);
+    .then(() => generateTeam(teamMembers))
+    .then((response) => {
+        let htmlData = generateHTML(response.data);
         return htmlData;
     })
-    .then(htmlData => {
+    .then((htmlData) => {
         return writeToFile(htmlData);
     })
+    .then(() => copyFile())
     .catch(err => {
     console.log(err);
     });
