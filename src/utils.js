@@ -1,6 +1,22 @@
 //const fs = require('fs');
+const Manager = require('../lib/Manager.js');
+const Engineer = require('../lib/Engineer.js');
+const Intern = require('../lib/Intern.js');
 
-function generateHTML(teamMembers) {
+function generateTeam(teamMembers) {
+  let teamObj = teamMembers.map((employee) => {
+    switch (employee.role) {
+      case 'Manager':
+        return new Manager(employee.name, employee.id, employee.email, employee.office);
+      case 'Engineer':
+        return new Engineer(employee.name, employee.id, employee.email, employee.github);
+      case 'Intern':
+        return new Intern(employee.name, employee.id, employee.email, employee.school);
+    }
+  })
+}
+
+function generateHTML(teamObj) {
     // declare variable to hold detail that differs for each role (office, school, github)
     var employeeDetail;
     // create array of HTML
@@ -27,7 +43,7 @@ function generateHTML(teamMembers) {
       <main class="container my-5">`];
       
       // loop through teamMembers array and check for each type of role and write appropriate HTML
-      teamMembers.forEach(employee => {
+      for (employee in teamObj) {
         switch (employee.role) {
           case 'Manager':
             employeeDetail = `<li>Office Number: ${employee.officeNumber}</li>`;
@@ -55,7 +71,7 @@ function generateHTML(teamMembers) {
             </div>
           </div>  
         `);
-      });
+      };
       // close HTML document with appropriate tags and footer
       html.push(`</main>
       <footer class="container text-center py-3">
@@ -68,4 +84,4 @@ function generateHTML(teamMembers) {
     return html.join('');
 }
 
-module.exports = generateHTML;
+module.exports = { generateTeam, generateHTML };
