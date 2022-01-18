@@ -4,6 +4,7 @@ const Engineer = require('../lib/Engineer.js');
 const Intern = require('../lib/Intern.js');
 
 function generateTeam(teamMembers) {
+
   let teamObj = teamMembers.map((employee) => {
     switch (employee.role) {
       case 'Manager':
@@ -13,10 +14,12 @@ function generateTeam(teamMembers) {
       case 'Intern':
         return new Intern(employee.name, employee.id, employee.email, employee.school);
     }
-  })
+  });
+
+  return teamObj;
 }
 
-function generateHTML(teamObj) {
+function generateHTML(teamMembers) {
     // declare variable to hold detail that differs for each role (office, school, github)
     var employeeDetail;
     // create array of HTML
@@ -43,13 +46,13 @@ function generateHTML(teamObj) {
       <main class="container my-5">`];
       
       // loop through teamMembers array and check for each type of role and write appropriate HTML
-      for (employee in teamObj) {
+      for (const employee of teamMembers) {
         switch (employee.role) {
           case 'Manager':
             employeeDetail = `<li>Office Number: ${employee.officeNumber}</li>`;
             break;
           case 'Engineer':
-            employeeDetail = `<li>Git Hub: <a href="github.com/${employee.gitHub}">${employee.gitHub}</a></li>`;
+            employeeDetail = `<li>Git Hub: <a href="github.com/${employee.github}">${employee.github}</a></li>`;
             break;
           case 'Intern':
             employeeDetail = `<li>School: ${employee.school}</li>`;

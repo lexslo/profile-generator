@@ -67,8 +67,10 @@ function createManager () {
         }
     ])
     .then(answers => {
-        // let manager = new Manager(answers.name, answers.id, answers.email, answers.office);
+        //let manager = new Manager(answers.name, answers.id, answers.email, answers.office);
         // send manager to teamMembers array
+        answers.role = 'Manager';
+        //teamMembers.push(manager);
         teamMembers.push(answers);
         return optionMenu();
     });
@@ -157,8 +159,10 @@ function createEngineer () {
         }
     ])
     .then(answers => {
-        // let engineer = new Engineer(answers.name, answers.id, answers.email, answers.github);
+        //let engineer = new Engineer(answers.name, answers.id, answers.email, answers.github);
         // send engineer to teamMembers array
+        answers.role = 'Engineer';
+        //teamMembers.push(engineer);
         teamMembers.push(answers);
         console.log(teamMembers);
         // return to menu
@@ -224,6 +228,8 @@ function createIntern () {
     .then(answers => {
         // let intern = new Intern(answers.name, answers.id, answers.email, answers.school);
         // send engineer to teamMembers array
+        //teamMembers.push(intern);
+        answers.role = 'Intern';
         teamMembers.push(answers);
         console.log(teamMembers);
         // return to menu
@@ -244,12 +250,16 @@ function writeToFile(data) {
 
 //Initialize app
 createManager()
+    // .then(teamMembers => {
+    //     let htmlObj = generateTeam(teamMembers);
+    //     return htmlObj;
+    // })
+    // .then(htmlObj => {
+    //     let htmlData = generateHTML(htmlObj);
+    //     return htmlData;
+    // })
     .then(teamMembers => {
-        let htmlObj = generateTeam(teamMembers);
-        return htmlObj;
-    })
-    .then(htmlObj => {
-        let htmlData = generateHTML(htmlObj);
+        let htmlData = generateHTML(teamMembers);
         return htmlData;
     })
     .then(htmlData => {
