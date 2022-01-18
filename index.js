@@ -1,7 +1,8 @@
+// require npm packages
 const inquirer = require('inquirer');
 const fs = require('fs');
 // require files within project
-const generateHTML = require('./src/generateHTML.js');
+const generateHTML = require('./src/utils.js');
 const Manager = require('./lib/Manager.js');
 const Engineer = require('./lib/Engineer.js');
 const Intern = require('./lib/Intern.js');
@@ -69,6 +70,7 @@ function createManager () {
         let manager = new Manager(answers.name, answers.id, answers.email, answers.office);
         // send manager to teamMembers array
         teamMembers.push(manager);
+        return optionMenu();
     });
 }
 
@@ -83,20 +85,20 @@ function optionMenu () {
         }
     ])
     .then(answer => {
-        if (answer.menu === 'Add Engineer') {
-            console.log('===== Adding Engineer =====');
-            createEngineer();
+        switch (answer.menu) {
+            case 'Add Engineer': 
+                console.log('===== Adding Engineer =====');
+                return createEngineer();
+
+            case 'Add Intern':
+                console.log('===== Adding Intern ======');
+                return createIntern();
+
+            case 'Finished':
+                console.log('*** FINISHED! ***');
+                return false;
         }
-        if (answer.menu === 'Add Intern') {
-            console.log('===== Adding Intern ======');
-            createIntern();
-        }
-        if (answer.menu === 'Finished') {
-            console.log('*** FINISHED! ***');
-            console.log(teamMembers);
-            //generateHTML(teamMembers);
-        }
-    })
+    });
 }
 
 function createEngineer () {
@@ -158,12 +160,14 @@ function createEngineer () {
         let engineer = new Engineer(answers.name, answers.id, answers.email, answers.github);
         // send engineer to teamMembers array
         teamMembers.push(engineer);
-        optionMenu();
+        console.log(teamMembers);
+        // return to menu
+        return optionMenu();
     });
 }
 
 function createIntern () {
-    inquirer.prompt([
+    return inquirer.prompt([
         { 
             type: 'input',
             name: 'name',
@@ -221,23 +225,32 @@ function createIntern () {
         let intern = new Intern(answers.name, answers.id, answers.email, answers.school);
         // send engineer to teamMembers array
         teamMembers.push(intern);
-        optionMenu();
+        console.log(teamMembers);
+        // return to menu
+        return optionMenu();
     });
 }
 
 // function to write HTML file
 function writeToFile(data) {
-
+    fs.writeFile('./dist/index.html', data, (err) => {
+        if (err)
+          console.log(err);
+        else {
+          console.log("HTML successfully created!");
+        }
+      });
 };
 
-// function to initialize app
-// function init() {
-//     createManager();
-// }
-
-//Function call to initialize app
+//Initialize app
 createManager()
-   .then(optionMenu);
-//   .catch(err => {
-//     console.log(err);
-//   });
+    .then( teamMembers => {
+        let htmlData = generateHTML(teamMembers);
+        return htmlData;
+    })
+    .then(htmlData => {
+        return writeToFile(htmlData);
+    })
+    .catch(err => {
+    console.log(err);
+    });
