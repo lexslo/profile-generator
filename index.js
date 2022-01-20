@@ -4,10 +4,6 @@ const fs = require('fs');
 // require files within project
 const {generateTeam, generateHTML} = require('./src/utils.js');
 
-const Manager = require('./lib/Manager.js');
-const Engineer = require('./lib/Engineer.js');
-const Intern = require('./lib/Intern.js');
-
 // empty array, pass to generateHTML
 const teamMembers = [];
 
@@ -254,7 +250,7 @@ function copyFile() {
           console.log("CSS successfully copied!");
         }
       });
-}
+};
 
 //Initialize app
 createManager()
