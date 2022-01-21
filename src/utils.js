@@ -62,7 +62,7 @@ function generateHTML(teamObj) {
             employeeDetail = `<li>Office Number: ${employee.office}</li>`;
             break;
           case 'Engineer':
-            employeeDetail = `<li>Git Hub: <a href="github.com/${employee.github}">${employee.github}</a></li>`;
+            employeeDetail = `<li>Git Hub: <a href="github.com/${employee.github}" target="_blank">${employee.github}</a></li>`;
             break;
           case 'Intern':
             employeeDetail = `<li>School: ${employee.school}</li>`;
